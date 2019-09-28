@@ -1,9 +1,13 @@
+#define _CRT_SECURE_NO_WARNINGS
+#pragma comment(lib, "WS2_32.lib")
+
 #include <winsock.h>
 #include <stdio.h>
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <regex>
+#include <thread>
 
 #define _CRT_SECURE_NO_WARNINGS
 
@@ -32,15 +36,29 @@ void StopWinSock();
 ImageLink convertStrToLink(string inputLink);
 char* createHandle(ImageLink link);
 char* strToChar(string str);
+void download(string get_url, string name_photo);
 
-void main() 
+void main()
 {
 	string get_url;
+	int i = 1;
 	cout << "Insert URL: ";
 	cin >> get_url;
+	while (1) {
+		string name_photo = to_string(i) + ".";
+		thread thr(download, get_url, name_photo);
+		thr.detach();
+		cin >> get_url;
+		i++;
+	}
+
+}
+
+
+void download(string get_url, string name_photo) {
 	ImageLink imageLink = convertStrToLink(get_url);
 	char name[8];
-	strcpy_s(name, "1.");
+	strcpy_s(name, name_photo.c_str());
 	strcat_s(name, strToChar(imageLink.fileFormat));
 	ofstream file;
 	file.open(name, ios::binary);
@@ -63,15 +81,15 @@ void main()
 	ssin.sin_addr.S_un.S_un_b.s_b4 = hp->h_addr[3];
 	ssin.sin_port = htons(80);
 
-	int ifsockopen = connect(s, (sockaddr*)&ssin, sizeof(ssin));
-	const char *sct = createHandle(imageLink);
+	int ifsockopen = connect(s, (sockaddr*)& ssin, sizeof(ssin));
+	const char* sct = createHandle(imageLink);
 	send(s, sct, strlen(sct), 0);
 	char get[1];
 	string pocket;
 	while (ifsockopen == 0)
 	{
 		out = recv(s, get, sizeof(get), 0);
-		
+
 		if (out == 0)
 		{
 			break;
@@ -84,21 +102,21 @@ void main()
 	}
 	closesocket(s);
 	StopWinSock();
-	
+
 	regex reg("(\r\n\r\n)");
 	smatch matches;
-	int k, l;
+	int k(0), l(0);
 	if (regex_search(pocket, matches, reg))
 	{
 		cout << matches[1].str() << "\n";
 		k = matches.position(1);
 		l = matches.length(1);
-		cout << k << endl << l << endl;
 	}
 	pocket.erase(0, k + l);
 	file << pocket;
+	cout << name_photo << " download succsesfull" << endl;
 	file.close();
-}	
+}
 
 void StartWinSock()
 {
@@ -108,7 +126,7 @@ void StartWinSock()
 		printf("Winsock not initialized\n");
 		WSACleanup();
 	}
-	else printf("Winsock initialized\n");
+	else printf("Winsock initialized\n Insert URL: ");
 
 }
 
@@ -119,7 +137,6 @@ void StopWinSock()
 		printf("Error cleanup\n");
 	else
 		printf("Cleanup is ok\n");
-
 }
 
 ImageLink convertStrToLink(string inputLink) {
