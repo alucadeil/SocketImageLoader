@@ -85,7 +85,7 @@ void main()
 	closesocket(s);
 	StopWinSock();
 	
-	regex reg("Accept-Ranges: ([a-zA-Z]+)");
+	regex reg("(\r\n\r\n)");
 	smatch matches;
 	int k, l;
 	if (regex_search(pocket, matches, reg))
@@ -95,9 +95,8 @@ void main()
 		l = matches.length(1);
 		cout << k << endl << l << endl;
 	}
-	pocket.erase(0, k + l + 4);
+	pocket.erase(0, k + l);
 	file << pocket;
-	cout << "jopa" << endl;
 	file.close();
 }	
 
