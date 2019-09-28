@@ -1,6 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-#pragma comment(lib, "WS2_32.lib")
-
 #include <winsock.h>
 #include <stdio.h>
 #include <iostream>
@@ -8,8 +5,6 @@
 #include <fstream>
 #include <regex>
 #include <thread>
-
-#define _CRT_SECURE_NO_WARNINGS
 
 using namespace std;
 
@@ -102,8 +97,8 @@ void download(string get_url, string name_photo) {
 	}
 	closesocket(s);
 	StopWinSock();
-
-	regex reg("(\r\n\r\n)");
+	pocket.erase(0, pocket.find("\r\n\r\n") + 4);
+	/*regex reg("(\r\n\r\n)");
 	smatch matches;
 	int k(0), l(0);
 	if (regex_search(pocket, matches, reg))
@@ -112,7 +107,7 @@ void download(string get_url, string name_photo) {
 		k = matches.position(1);
 		l = matches.length(1);
 	}
-	pocket.erase(0, k + l);
+	pocket.erase(0, k + l);*/
 	file << pocket;
 	cout << name_photo << " download succsesfull" << endl;
 	file.close();
