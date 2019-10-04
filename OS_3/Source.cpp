@@ -37,13 +37,12 @@ void main()
 {
 	string get_url;
 	int i = 1;
-	cout << "Insert URL: ";
-	cin >> get_url;
 	while (1) {
+		cout << "Insert URL: ";
+		cin >> get_url;
 		string name_photo = to_string(i) + ".";
 		thread thr(download, get_url, name_photo);
 		thr.detach();
-		cin >> get_url;
 		i++;
 	}
 
@@ -61,8 +60,6 @@ void download(string get_url, string name_photo) {
 	int out = 1;
 	StartWinSock();
 	int write;
-
-
 
 	struct hostent* hp;
 	hp = gethostbyname(strToChar(imageLink.hostName));
@@ -98,18 +95,9 @@ void download(string get_url, string name_photo) {
 	closesocket(s);
 	StopWinSock();
 	pocket.erase(0, pocket.find("\r\n\r\n") + 4);
-	/*regex reg("(\r\n\r\n)");
-	smatch matches;
-	int k(0), l(0);
-	if (regex_search(pocket, matches, reg))
-	{
-		cout << matches[1].str() << "\n";
-		k = matches.position(1);
-		l = matches.length(1);
-	}
-	pocket.erase(0, k + l);*/
+
 	file << pocket;
-	cout << name_photo << " download succsesfull" << endl;
+	//cout << name_photo << " download succsesfull" << endl;
 	file.close();
 }
 
@@ -118,20 +106,19 @@ void StartWinSock()
 	WSADATA wsaData;
 	if (WSAStartup(WINSOCK_VERSION, &wsaData))
 	{
-		printf("Winsock not initialized\n");
+		//printf("Winsock not initialized\n");
 		WSACleanup();
 	}
-	else printf("Winsock initialized\n Insert URL: ");
+	//else printf("Winsock initialized\n Insert URL: ");
 
 }
 
 void StopWinSock()
 {
-
-	if (WSACleanup())
-		printf("Error cleanup\n");
-	else
-		printf("Cleanup is ok\n");
+	WSACleanup();
+	//if (WSACleanup())
+		//printf("Error cleanup\n");
+	//else printf("Cleanup is ok\n");
 }
 
 ImageLink convertStrToLink(string inputLink) {
