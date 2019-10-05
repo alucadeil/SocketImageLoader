@@ -3,7 +3,6 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <regex>
 #include <thread>
 
 using namespace std;
@@ -45,7 +44,6 @@ void main()
 		thr.detach();
 		i++;
 	}
-
 }
 
 
