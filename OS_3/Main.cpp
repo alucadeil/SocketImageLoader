@@ -4,54 +4,57 @@
 #include <string>
 #include <fstream>
 #include <thread>
+#include <regex>
+#include "ImageUrl.h"
+
+//select
+//poll
+//epoll
 
 using namespace std;
 
 #define WINSOCK_VERSION 0x0101
-int currentAddressNumber = 1;
-string addressArray[100];
 
-
-class ImageLink {
+/*class ImageUrl {
 public:
 	string hostName;
 	string imagePath;
 	string fileFormat;
 
-	ImageLink(string hostName, string imagePath, string fileFormat) {
+	ImageUrl(string hostName, string imagePath, string fileFormat) {
 		this->hostName = hostName;
 		this->imagePath = imagePath;
 		this->fileFormat = fileFormat;
 	}
-};
+
+};*/
 
 void StartWinSock();
 void StopWinSock();
-ImageLink convertStrToLink(string inputLink);
-char* createHandle(ImageLink link);
-char* strToChar(string str);
+ImageUrl convertStrToLink(string inputLink);
+char* createHandle(ImageUrl link);
+//char* strToChar(string str);
 void download(string get_url, string name_photo);
 
 void main()
 {
 	string get_url;
 	int i = 1;
-	while (1) {
+	/*while (1) {
 		cout << "Insert URL: ";
 		cin >> get_url;
 		string name_photo = to_string(i) + ".";
 		thread thr(download, get_url, name_photo);
 		thr.detach();
 		i++;
-	}
+	}*/
 }
 
-
 void download(string get_url, string name_photo) {
-	ImageLink imageLink = convertStrToLink(get_url);
+	ImageUrl imageLink = convertStrToLink(get_url);
 	char name[8];
 	strcpy_s(name, name_photo.c_str());
-	strcat_s(name, strToChar(imageLink.fileFormat));
+	strcat_s(name, imageLink.fileFormat.c_str());
 	ofstream file;
 	file.open(name, ios::binary);
 	SOCKET s;
@@ -60,7 +63,7 @@ void download(string get_url, string name_photo) {
 	int write;
 
 	struct hostent* hp;
-	hp = gethostbyname(strToChar(imageLink.hostName));
+	hp = gethostbyname(imageLink.hostName.c_str());
 	s = socket(AF_INET, SOCK_STREAM, 0);
 
 	struct sockaddr_in ssin;
@@ -119,7 +122,7 @@ void StopWinSock()
 	//else printf("Cleanup is ok\n");
 }
 
-ImageLink convertStrToLink(string inputLink) {
+ImageUrl convertStrToLink(string inputLink) {
 	char hostName[100];
 	char imagePath[100];
 	char temporaryBuff[200];
@@ -127,6 +130,8 @@ ImageLink convertStrToLink(string inputLink) {
 	char transformBuff2[200];
 	char fileFormat[10];
 
+	int currentAddressNumber = 1;
+	string addressArray[100];
 	for (int i = 0; i < inputLink.length(); i++) {
 		transformBuff1[i] = inputLink[i];
 	}
@@ -153,11 +158,11 @@ ImageLink convertStrToLink(string inputLink) {
 
 	sscanf(imagePath, "%*[^.]%s", transformBuff1);
 	sscanf(transformBuff1, "%*c%s", fileFormat);
-	ImageLink* imageLink = new ImageLink(hostName, imagePath, fileFormat);
+	ImageUrl* imageLink = new ImageUrl(hostName, imagePath, fileFormat);
 	return *imageLink;
 }
 
-char* createHandle(ImageLink link)
+char* createHandle(ImageUrl link)
 {
 	char str[1024];
 	string buff1 = "GET ";
@@ -176,16 +181,4 @@ char* createHandle(ImageLink link)
 	}
 	str[length] = '\0';
 	return str;
-}
-
-char* strToChar(string str)
-{
-	int length = str.length();
-	char* a = new char[length];
-	for (int i = 0; i < length; i++)
-	{
-		a[i] = str[i];
-	}
-	a[length] = '\0';
-	return a;
 }
