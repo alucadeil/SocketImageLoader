@@ -1,19 +1,20 @@
 #ifndef SOME_UNIQUE_ID
 #define SOME_UNIQUE_ID
 #include <string>
+#include <regex>
 
-using std::string;
+using namespace std;
 
 class ImageUrl
 {
 public:
 	string hostName;
 	string imagePath;
-	string fileFormat;
 
-	ImageUrl(string hostName, string imagePath, string fileFormat);
+	ImageUrl(string hostName, string imagePath);
 
-	ImageUrl parseUrl(string url);
 };
+
+ImageUrl* parseUrl(string url);
 
 #endif

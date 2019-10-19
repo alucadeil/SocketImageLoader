@@ -1,14 +1,17 @@
 #include "ImageUrl.h"
 
-ImageUrl::ImageUrl(string hostName, string imagePath, string fileFormat) {
+
+ImageUrl::ImageUrl(string hostName, string imagePath) {
 	this->hostName = hostName;
 	this->imagePath = imagePath;
-	this->fileFormat = fileFormat;
 }
 
-ImageUrl::parseUrl(string url) {
+ImageUrl* parseUrl(string url) {
 
-	string hostPattern = "https?:\/\/([\w\.]+[a-z]{2,6}\.?)";
+	string Pattern = "http(s)?://([^/?:]+)(/?.+)";
+	regex parse(Pattern);
+	string hostName = regex_replace(url, parse, "$2");
+	string path = regex_replace(url, parse, "$3");
 
-	return;
+	return new ImageUrl(hostName, path);
 }

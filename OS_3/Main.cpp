@@ -15,31 +15,19 @@ using namespace std;
 
 #define WINSOCK_VERSION 0x0101
 
-/*class ImageUrl {
-public:
-	string hostName;
-	string imagePath;
-	string fileFormat;
 
-	ImageUrl(string hostName, string imagePath, string fileFormat) {
-		this->hostName = hostName;
-		this->imagePath = imagePath;
-		this->fileFormat = fileFormat;
-	}
-
-};*/
-
-void StartWinSock();
+/*void StartWinSock();
 void StopWinSock();
 ImageUrl convertStrToLink(string inputLink);
 char* createHandle(ImageUrl link);
 //char* strToChar(string str);
-void download(string get_url, string name_photo);
+void download(string get_url, string name_photo);*/
 
 void main()
 {
-	string get_url;
+	string get_url = "http://cyberstatic.net/images/cyberforum_logo.png";
 	int i = 1;
+
 	/*while (1) {
 		cout << "Insert URL: ";
 		cin >> get_url;
@@ -50,7 +38,7 @@ void main()
 	}*/
 }
 
-void download(string get_url, string name_photo) {
+/*void download(string get_url, string name_photo) {
 	ImageUrl imageLink = convertStrToLink(get_url);
 	char name[8];
 	strcpy_s(name, name_photo.c_str());
@@ -100,9 +88,9 @@ void download(string get_url, string name_photo) {
 	file << pocket;
 	//cout << name_photo << " download succsesfull" << endl;
 	file.close();
-}
+}*/
 
-void StartWinSock()
+/*void StartWinSock()
 {
 	WSADATA wsaData;
 	if (WSAStartup(WINSOCK_VERSION, &wsaData))
@@ -112,17 +100,17 @@ void StartWinSock()
 	}
 	//else printf("Winsock initialized\n Insert URL: ");
 
-}
+}*/
 
-void StopWinSock()
+/*void StopWinSock()
 {
 	WSACleanup();
 	//if (WSACleanup())
 		//printf("Error cleanup\n");
 	//else printf("Cleanup is ok\n");
-}
+}*/
 
-ImageUrl convertStrToLink(string inputLink) {
+/*ImageUrl convertStrToLink(string inputLink) {
 	char hostName[100];
 	char imagePath[100];
 	char temporaryBuff[200];
@@ -160,9 +148,9 @@ ImageUrl convertStrToLink(string inputLink) {
 	sscanf(transformBuff1, "%*c%s", fileFormat);
 	ImageUrl* imageLink = new ImageUrl(hostName, imagePath, fileFormat);
 	return *imageLink;
-}
+}*/
 
-char* createHandle(ImageUrl link)
+/*char* createHandle(ImageUrl link)
 {
 	char str[1024];
 	string buff1 = "GET ";
@@ -181,4 +169,4 @@ char* createHandle(ImageUrl link)
 	}
 	str[length] = '\0';
 	return str;
-}
+}*/
